@@ -1,1 +1,1 @@
-# AccreditEmployeeApp
+# See ReadMe.docx file
