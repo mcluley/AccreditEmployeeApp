@@ -1,0 +1,54 @@
+@model EmployeeShared.Models.Employee
+
+@{
+    ViewBag.Title = "Delete Employee";
+}
+
+<h2>Delete Employee</h2>
+<p class="error">@ViewBag.ErrorMessage</p>
+<h3>Are you sure you want to delete this employee?</h3>
+<div>
+    <hr />
+     <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Firstname)  @Html.DisplayFor(model => model.Lastname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+
+        <dd>
+            @Model.DateOfBirth.ToShortDateString()
+        </dd>
+
+        <dt>
+            Department
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeNumber)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete Employee" class="btn btn-danger" />
+            <button name="btnBackToEmployees" id="btnBackToEmployees" title="Cancel / Back To Employee List" class="btn btn-secondary" onclick="location.href='@Url.Action( "Index","Employee")';return false;">Cancel / Back To Employee List</button>
+        </div>
+    }
+</div>

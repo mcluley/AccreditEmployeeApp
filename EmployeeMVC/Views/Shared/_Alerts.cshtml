@@ -1,0 +1,78 @@
+﻿<style type="text/css">
+    .MessageContainer {
+        position: fixed;
+        top: 50px;
+        left: 0px;
+        width: 100%;
+        z-index: 9999;
+        color: black;
+    }
+
+    .noalert {
+        display: none;
+    }
+
+    .alert {
+        position: relative;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <center class="MessageContainer">
+        <div id="SuccessMessage" class="alert alert-success alert-dismissable" style="display:none;margin-top:42px; width:100%">
+            <a href="#" class="close" aria-label="close" style="margin-right:10px;">×</a>
+            <i class="fa fa-check" style="margin-right:4px;"></i>
+            <strong>Success </strong> @TempData["SuccessMessage"]
+        </div>
+        <div id="InfoMessage" class="alert alert-info alert-dismissable" style="display:none;margin-top:42px; width:100%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-right:10px;">×</a>
+            <i class="fa fa-info-circle" style="margin-right:4px;"></i>
+            <strong>Info </strong> @TempData["InfoMessage"]
+        </div>
+        <div id="WarningMessage" class="alert alert-warning alert-dismissable" style="display:none;margin-top:42px; width:100%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-right:10px;">×</a>
+            <i class="fa fa-exclamation-triangle" style="margin-right:4px;"></i>
+            <strong>Warning. </strong> <span style="color:#2e2828;">@TempData["WarningMessage"]</span>
+        </div>
+        <div id="ErrorMessage" class="alert alert-danger alert-dismissable" style="display:none;margin-top:42px; width:100%">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" style="margin-right:10px;">×</a>
+            <i class="fa fa-ban" style="margin-right:4px;"></i>
+            <strong>Error </strong> @TempData["ErrorMessage"]
+        </div>
+    </center>
+}
+
+    <script>
+    $(document).ready(function () {
+        var SuccessMessage = $('#SuccessMessage');
+        var InfoMessage = $('#InfoMessage');
+        var WarningMessage = $('#WarningMessage');
+        var ErrorMessage = $('#ErrorMessage');
+
+        $('.close').click(function (e) {  
+            $('.MessageContainer').fadeOut();
+        });
+        if ('@TempData["SuccessMessage"]' != "") {
+            SuccessMessage.fadeIn(function () {
+                SuccessMessage.delay(2500).fadeOut();
+            });
+        }
+        if ('@TempData["InfoMessage"]' != "") {
+            InfoMessage.fadeIn(function () {
+                InfoMessage.delay(2500).fadeOut();
+            });
+        }
+        if ('@TempData["WarningMessage"]' != "") {
+            WarningMessage.fadeIn(function () {
+                WarningMessage.delay(2500).fadeOut();
+            });
+        }
+        if ('@TempData["ErrorMessage"]' != "") {
+            ErrorMessage.fadeIn(function () {
+                ErrorMessage.delay(2500).fadeOut();
+            });
+        }
+    });
+    </script>

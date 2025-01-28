@@ -1,0 +1,76 @@
+﻿@model EmployeeMVC.Models.EmployeeListViewModel
+
+<link href="~/css/pagedlist.css" rel="stylesheet" />
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<table style="width:100%">
+    <tr>
+        <td style="width:10%">
+            <h2>Employees</h2>
+        </td>
+        <td style ="text-align:end">
+            <p>
+                <button name="nameButton" id="idButton" title="Create New Employee" class="btn btn-primary" onclick="location.href='@Url.Action( "Create","Employee")';return false;">Create New Employee</button>
+            </p>
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm("Index", "Employee", FormMethod.Get))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.CurrentSortedColumn, new { @id = "hndSortedColumn" })
+    @Html.HiddenFor(m => m.CurrentSortOrder, new { @id = "hndSortOrder" })
+    @Html.HiddenFor(m => m.CurrentPageNumber, new { @id = "hndCurrentPageNumber" })
+
+    <table>
+        <tr>
+            <td style="width:175px;">
+                <span class="filterHeadings">Filter Status</span>
+                @Html.DropDownListFor(m => m.SelectedStatusId, Model.Statuses, new { @id = "ddlStatuses", @class = "form-control", @style = "width:150px;", @onchange = "refreshData(true)" })
+            </td>
+            <td style ="width:450px;">
+                <span class="filterHeadings">Filter Department</span>
+                 @Html.DropDownListFor(m => m.SelectedDepartmentId, Model.Departments, new { @id = "ddlDepartments", @class = "form-control", @style = "width:350px;", @onchange = "refreshData(true)" })
+            </td>
+            <td style="align-items:">
+                <span class="filterHeadings">Currently Sorted Column and Order: </span>
+                <span id="idCurrSortColumnAndOrder">@Model.CurrentSortedColumn (@Model.CurrentSortOrder)</span>
+            </td>
+        </tr>
+    </table>
+
+    <div id="divEmployeeData">
+    </div>
+
+}
+
+ @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            refreshData(false);
+        });
+
+        function refreshData(resetPage) {
+            var statId = $("#ddlStatuses").val();
+            var deptId = $("#ddlDepartments").val();
+            var sortColumn = $("#hndSortedColumn").val();
+            var sortOrder = $("#hndSortOrder").val();
+            var currPage = $("#hndCurrentPageNumber").val();
+
+            if (resetPage == true)
+            {
+                    currPage = 1;
+            }
+
+            var loc = window.location.href;
+            $('#divEmployeeData').load(loc.substring(0, loc.lastIndexOf('/') + 1) + "Employee/GetEmployeePartial?sortColumn=" + sortColumn + "&sortOrder=" + sortOrder + "&statusId=" + statId + "&departmentId=" + deptId + "&currPage=" + currPage);
+        }
+    </script>
+}

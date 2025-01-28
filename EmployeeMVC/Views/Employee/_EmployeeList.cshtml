@@ -1,0 +1,63 @@
+﻿@model EmployeeMVC.Models.EmployeeListViewModel
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Fluent
+
+<table class="table table-striped" style="margin-top:15px;">
+    <tr>
+        <th>@Html.ActionLink("Employee ID", "Index", new { sortColumn = "EmployeeId", sortOrder = ((string?)TempData["EmployeeId_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class="noUnderline"})</th>
+        <th>@Html.ActionLink("Emp. Number", "Index", new { sortColumn = "EmployeeNumber", sortOrder = ((string?)TempData["EmployeeNumber_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("First Name", "Index", new { sortColumn = "Firstname", sortOrder = ((string?)TempData["Firstname_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("Last Name", "Index", new { sortColumn = "Lastname", sortOrder = ((string?)TempData["Lastname_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("DOB", "Index", new { sortColumn = "DateOfBirth", sortOrder = ((string?)TempData["DateOfBirth_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("Email", "Index", new { sortColumn = "Email", sortOrder = ((string?)TempData["Email_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("Department", "Index", new { sortColumn = "DepartmentDescription", sortOrder = ((string?)TempData["DepartmentDescription_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("Status", "Index", new { sortColumn = "StatusDescription", sortOrder = ((string?)TempData["StatusDescription_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>@Html.ActionLink("Active", "Index", new { sortColumn = "IsActive", sortOrder = ((string?)TempData["IsActive_SortOrder"] ?? "") == "asc" ? "desc" : "asc", statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId }, new { @class = "noUnderline" })</th>
+        <th>Actions</th>
+    </tr>
+        
+    @if (Model.Employees.Count>0)
+    {
+        @foreach (var item in Model.Employees)
+        {
+            <tr>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.EmployeeId)</td>
+                <td>@Html.DisplayFor(modelItem => item.EmployeeNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Firstname)</td>
+                <td>@Html.DisplayFor(modelItem => item.Lastname)</td>
+                <td>@Html.DisplayFor(modelItem => item.DateOfBirth)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Department.DepartmentDescription)</td>
+                <td>@Html.DisplayFor(modelItem => item.Status.StatusDescription)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.IsActive)</td>
+                <td>
+                    <button name="nameButton" id="idButton" title="Edit Employee" class="btn-sm btn-primary" onclick="location.href='@Url.Action( "Edit","Employee", new {  id = item.EmployeeId })';return false;">Edit</button>
+                    <button name="nameButton" id="idButton" title="Delete Employee" class="btn-sm btn-danger" onclick="location.href='@Url.Action( "Delete","Employee", new {  id = item.EmployeeId })';return false;">Delete</button>
+                </td>
+            </tr>
+        }
+
+    }
+    else
+    {
+    <tr>
+        <td>
+            <p class="noEmployeesToShow">No Employees To Show. Please Change Filters Accordingly If Requred</p>
+        </td>
+    </tr>
+    }
+
+</table>
+
+<br />
+
+<div>
+    @Html.PagedListPager(Model.Employees,
+            pageNumber => Url.Action("Index", new { SortColumn = Model.CurrentSortedColumn, SortOrder = Model.CurrentSortOrder, statusId = Model.SelectedStatusId, departmentId = Model.SelectedDepartmentId, pageNumber }),
+        new PagedListRenderOptions()
+        {
+            DisplayPageCountAndCurrentLocation = true,
+            DisplayItemSliceAndTotal = true
+        })
+</div>
